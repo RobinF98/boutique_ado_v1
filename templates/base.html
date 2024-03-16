@@ -8,9 +8,9 @@
     <meta http-equiv="X-UA-Comppatible" content="ie=edge">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% endblock }
+    {% endblock %}
 
-    {block extra_meta}
+    {% block extra_meta %}
     {% endblock %}
 
 
@@ -19,7 +19,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     {% endblock %}
 
-    {block extra_css}
+    {% block extra_css %}
     {% endblock %}
 
     {%block corejs %}
@@ -28,7 +28,7 @@
     </script>
     {% endblock %}
 
-    {block extra_js}
+    {% block extra_js %}
     {% endblock %}
 
     <title>Boutique Ado {% block extra_title %}{% endblock %}</title>
