@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '8000-codeanywhere-templates-p-s0p9aj3dxj.us1.codeanyapp.com',
+    '127.0.0.1',
     ]
 
 
