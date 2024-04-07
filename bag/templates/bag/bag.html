@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load bag_tools %}
 
 {% block page_header %}
     <div class="container header-container">
@@ -50,7 +51,7 @@
                                     <p class="my-0">${{ item.product.price }}</p>
                                 </td>
                                 <td class="py-3 w-25">
-                                    <form method="POST" action="" class="form update-form">
+                                    <form method="POST" action="{% url 'adjust_bag' item.item_id %}" class="form update-form">
                                         {% csrf_token %}
                                         <div class="form-group">
                                             <div class="input-group">
@@ -75,13 +76,13 @@
                                                     <input type="hidden" name="product_size" value="{{ item.size }}">
                                                 {% endif %}
                                             </div>
-                                            <a href="" class="update-link text-info link-underline link-underline-opacity-0"><small>Update</small></a>
-                                            <a href="" class="remove-item float-end text-danger link-underline link-underline-opacity-0" id="remove_{{ item.item_id }}" data-size="{{ item.size }}"><small>Remove</small></a>
+                                            <a  class="update-link text-info link-underline link-underline-opacity-0"><small>Update</small></a>
+                                            <a  class="remove-item float-end text-danger link-underline link-underline-opacity-0" id="remove_{{ item.item_id }}" data-size="{{ item.size }}"><small>Remove</small></a>
                                         </div>
                                     </form>
                                 </td>
                                 <td class="py-3">
-                                    <p class="my-0">${{ item.product.price }}</p>
+                                    <p class="my-0">${{ item.product.price | calc_subtotal:item.quantity}}</p>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -136,20 +137,19 @@
     <script type="text/javascript">
         // update quantity on click
         $('.update-link').on("click", function(e) {
-            let form = $(this).prev('.update-form');
-            form.submit();
+            $('.update-form').first().trigger("submit");
         })
 
         // remove item and reload on click
-        $('.remove-link').on("click", function(e) {
+        $('.remove-item').on("click", function(e) {
             let csrfToken = "{{ csrf_token }}";
             let itemID = $(this).attr('id').split('remove_')[1];
             let size = $(this).data('size')
             let url = `/bag/remove/${itemID}`
             let data = {'csrfmiddlewaretoken': csrfToken, 'size': size}
 
-            $.post(url, data)
-                .done(function() {
+            let postform = $.post(url, data);
+                postform.done(function() {
                     location.reload();
                 })
         })
