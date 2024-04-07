@@ -144,7 +144,7 @@
         $('.remove-item').on("click", function(e) {
             let csrfToken = "{{ csrf_token }}";
             let itemID = $(this).attr('id').split('remove_')[1];
-            let size = $(this).data('size')
+            let size = $(this).data('product_size')
             let url = `/bag/remove/${itemID}`
             let data = {'csrfmiddlewaretoken': csrfToken, 'size': size}
 
