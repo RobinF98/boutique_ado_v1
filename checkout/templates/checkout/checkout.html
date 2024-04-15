@@ -3,7 +3,7 @@
 {% load bag_tools %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static "checkout/>css/checkout.css" %}">
+    <link rel="stylesheet" href="{% static "checkout/css/checkout.css" %}">
 {% endblock %}
 
 {% block page_header %}
@@ -95,11 +95,12 @@
                             {% if user.is_authenticated %}
                                 <label for="id-save-info" class="form-check-label">Save this delivery information for future orders</label>
                                 <input type="checkbox" name="save-info" id="id-save-info" class="form-check-input ms-2 me-0" checked>
-                            {% endif %}
                                 <label class="form-check-label" for="id-save-info">
+                            {% else %}
                                     <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or 
                                     <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
                                 </label>
+                            {% endif %}
                         </div>
                     </fieldset>
                     <fieldset class="px-3">
@@ -136,4 +137,11 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block postloadjs %}
+    {{ block.super }}
+    {{ stripe_public_key|json_script:"id_stripe_public_key" }}
+    {{ client_secret|json_script:"id_client_secret" }}
+    <script src="{% static 'checkout/js/stripe_elements.js' %}"></script>
 {% endblock %}
