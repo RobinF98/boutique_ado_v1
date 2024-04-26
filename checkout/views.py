@@ -52,7 +52,11 @@ def checkout(request):
 
         order_form = OrderForm(form_data)
         if order_form.is_valid():
-            order = order_form.save()
+            order = order_form.save(commit=False)
+            pid = request.POST.get('client_secret').split('_secret')[0]
+            order.stripe_pid = pid
+            order.original_bag = json.dumps(bag)
+            order.save()
             for item_id, item_data in bag.items():
                 try:
                     product = Product.objects.get(id=item_id)
@@ -85,10 +89,10 @@ def checkout(request):
             return redirect(reverse('checkout_success', args=[order.order_number]))
 
         else:
-            messages.error(request, 'There was an error with your form.'
-                           'Please double check your information')
+            messages.error(request, ('There was an error with your form.'
+                           'Please double check your information'))
 
-    else:
+    elif request.method == 'GET':
         bag = request.session.get("bag", {})
         if not bag:
             messages.error(request, "There's nothing in your bag at the moment")
@@ -102,6 +106,7 @@ def checkout(request):
             amount=stripe_total,
             currency=settings.STRIPE_CURRENCY,
         )
+        print(f'Intent: {intent}')
         order_form = OrderForm()
 
     if not stripe_public_key:
