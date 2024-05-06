@@ -4,12 +4,12 @@
 {% block head_title %}
     {% trans "Confirm Access" %}
 {% endblock head_title %}
-{% block content %}
+{% block inner-content %}
     {% element h1 %}
         {% trans "Confirm Access" %}
     {% endelement %}
     <p>{% blocktranslate %}Please reauthenticate to safeguard your account.{% endblocktranslate %}</p>
-    {% block reauthenticate_content %}{% endblock %}
+    {% block reauthenticate_inner-content %}{% endblock %}
     {% if reauthentication_alternatives %}
         {% element hr %}
         {% endelement %}
@@ -24,4 +24,4 @@
             {% endfor %}
         </ul>
     {% endif %}
-{% endblock content %}
+{% endblock inner-content %}
